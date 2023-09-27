@@ -15,20 +15,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Build Release
         run: cargo build --release
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bc-cli-${{ matrix.os }}
-          path: target/release/bc-cli
+          path: target/release/bc-cli${{ matrix.os == 'windows-latest' && '.exe' || '' }}
